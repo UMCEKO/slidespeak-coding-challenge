@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Any
+from typing import Any, Optional
 
 from pydantic import BaseModel
 
@@ -13,4 +13,5 @@ class TaskStatusEnum(Enum):
 class TaskResult(BaseModel):
     status: TaskStatusEnum
     ready: bool
-    result: Any
+    result: Optional[str]
+    error: Optional[str]
