@@ -31,16 +31,10 @@ app = FastAPI(
 )
 app.include_router(routes.router)
 
-origins = [
-    "http://localhost",
-    "http://localhost:8080",
-    "https://frontend.umceko.com"
-]
-
 # Set up cors
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=settings.CORS_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
