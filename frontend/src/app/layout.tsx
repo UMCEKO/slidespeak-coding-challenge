@@ -1,5 +1,5 @@
 import './globals.css';
-import {Figtree} from "next/font/google";
+import { Figtree } from 'next/font/google';
 
 export const metadata = {
   title: 'PowerPoint optimizer - SlideSpeak',
@@ -7,15 +7,15 @@ export const metadata = {
 };
 
 const figtree = Figtree({
-    subsets: ['latin'],
-    // If you need specific weights (check what's available)
-    weight: ['400', '500', '600', '700'],
-    // Optional: Add display setting
-    display: 'swap',
+  subsets: ['latin'],
+  // If you need specific weights (check what's available)
+  weight: ['400', '500', '600', '700'],
+  // Optional: Add display setting
+  display: 'swap',
 });
 
 const RootLayout = async ({ children }: { children: React.ReactNode }) => (
-  <html lang="en" className={figtree.className + " bg-[#F5F5F5]"}>
+  <html lang="en" className={figtree.className + ' bg-[#F5F5F5]'}>
     <body>{children}</body>
   </html>
 );
