@@ -1,12 +1,14 @@
 import {Dispatch, FC, SetStateAction, useState} from 'react';
-import {CurrentStep} from "@/components/PowerPointToPdfConverter";
-import {CompressionSelector} from "@/components/PowerPointToPdfConverter/ConfirmationStep/CompressionSelector";
+
+import {CurrentStep, ErrorState} from "@/components/PowerPointToPdfConverter";
 import {Button} from "@/components/PowerPointToPdfConverter/Button";
+import {CompressionSelector} from "@/components/PowerPointToPdfConverter/ConfirmationStep/CompressionSelector";
 
 type ConfirmationStepProps = {
     file: File,
     setCurrentStep: Dispatch<SetStateAction<CurrentStep>>,
-    setPdfUrl: Dispatch<SetStateAction<string | null>>
+    setPdfUrl: Dispatch<SetStateAction<string | null>>,
+    setError: Dispatch<SetStateAction<ErrorState>>
 };
 
 export const ConfirmationStep: FC<ConfirmationStepProps> = ({file, setCurrentStep, setPdfUrl}) => {

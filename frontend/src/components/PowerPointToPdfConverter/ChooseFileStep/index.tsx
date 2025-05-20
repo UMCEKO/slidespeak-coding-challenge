@@ -1,30 +1,24 @@
-import {Dispatch, FC, SetStateAction, useState} from 'react';
+import {Dispatch, FC, SetStateAction} from 'react';
 import {useDropzone} from 'react-dropzone';
+
+import {CurrentStep, ErrorState} from "@/components/PowerPointToPdfConverter";
 import UploadIcon from '@/icons/UploadIcon';
-import {CurrentStep} from "@/components/PowerPointToPdfConverter";
 
 type ChooseFileStepProps = {
   setCurrentStep: Dispatch<SetStateAction<CurrentStep>>,
-  setFile: Dispatch<SetStateAction<null | File>>
+  setFile: Dispatch<SetStateAction<null | File>>,
+  setError: Dispatch<SetStateAction<ErrorState>>
 };
 
-enum ErrorState {
-  NONE,
-  TOO_MANY_FILES,
-  SIZE_LIMIT_EXCEEDED,
-  INVALID_FILE,
-  OTHER
-}
-
 export const ChooseFileStep: FC<ChooseFileStepProps> = ({
-                                                          setCurrentStep,
-                                                          setFile
-                                                        }) => {
+  setCurrentStep,
+  setFile,
+  setError
+}) => {
 
-  const [error, setError] = useState<ErrorState>(ErrorState.NONE)
   const { getRootProps, getInputProps } = useDropzone({
-    onDropAccepted: async (files, event) => {
-      let file = files[0]
+    onDropAccepted: async (files, _event) => {
+      const file = files[0]
       setFile(file)
       setCurrentStep(CurrentStep.CONFIRMATION)
     },
