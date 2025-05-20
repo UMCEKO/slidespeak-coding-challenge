@@ -1,8 +1,6 @@
 from typing import List, Union
 
 import dotenv
-import os
-
 from pydantic import AnyHttpUrl
 from pydantic_settings import BaseSettings
 

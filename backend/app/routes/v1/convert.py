@@ -1,7 +1,5 @@
 import uuid
-from typing import BinaryIO, cast
 
-import celery.local
 import magic
 from fastapi import APIRouter, File, UploadFile, HTTPException
 from starlette.requests import Request
@@ -9,7 +7,7 @@ from starlette.requests import Request
 from app.core.config import settings
 from app.schemas.convert import ConvertResponse
 from app.services.s3 import s3_client
-from app.tasks.convert import convert_task, convert_pptx_to_pdf
+from app.tasks.convert import convert_pptx_to_pdf
 
 router = APIRouter(prefix="/convert")
 

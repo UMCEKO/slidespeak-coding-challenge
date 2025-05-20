@@ -1,4 +1,5 @@
 from fastapi import APIRouter
+
 from . import v1
 from ..schemas.errors import ValidationErrorResponse
 

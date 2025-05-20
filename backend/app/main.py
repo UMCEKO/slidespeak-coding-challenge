@@ -1,12 +1,11 @@
-import uvicorn
+from contextlib import asynccontextmanager
 
+import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app import routes
 from app.core.config import settings
-from contextlib import asynccontextmanager
-
 from app.core.logger import logger
 from app.exceptions import register_exception_handlers
 from app.services.s3 import check_s3

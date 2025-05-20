@@ -2,6 +2,7 @@ import asyncio
 from typing import cast
 
 from celery import Task
+
 from app.services.conversion import convert_powerpoint_to_pdf
 from app.worker import celery
 

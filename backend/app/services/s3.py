@@ -3,6 +3,7 @@ import botocore.exceptions
 from botocore.config import Config
 # For type definitions
 from mypy_boto3_s3.client import S3Client
+
 from app.core.config import settings
 from app.core.logger import logger
 
