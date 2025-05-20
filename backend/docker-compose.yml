@@ -8,9 +8,10 @@ services:
       - unoserver
       - celery
     ports:
-      - "3000:3000"
+      - "$PORT:3000"
     environment:
       - REDIS_URL=redis://redis
+      - PORT=3000
     env_file: .env
   celery:
     build: .
