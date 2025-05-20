@@ -3,7 +3,7 @@ from fastapi import APIRouter
 
 from app.schemas.status import StatusResponse
 from app.schemas.tasks import TaskResult, TaskStatusEnum
-from app.tasks import convert_task
+from app.tasks import convert_pptx_to_pdf
 
 router = APIRouter(prefix="/status")
 
@@ -15,7 +15,7 @@ router = APIRouter(prefix="/status")
     summary="Check the status of the cocversion process"
 )
 async def status(job_id: str):
-    result: celery.result.AsyncResult = convert_task.AsyncResult(job_id)
+    result: celery.result.AsyncResult = convert_pptx_to_pdf.AsyncResult(job_id)
     task_result = TaskResult(
             status=result.status,
             ready=result.ready(),
