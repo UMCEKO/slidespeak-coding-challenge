@@ -25,8 +25,8 @@ export const PowerPointToPdfConverter: FC<PowerPointToPdfConverterProps> = () =>
                     ? <ChooseFileStep setFile={setFile} setCurrentStep={setCurrentStep}/>
                     : currentStep === CurrentStep.CONFIRMATION && file
                         ? <ConfirmationStep file={file} setCurrentStep={setCurrentStep} setPdfUrl={setPdfUrl}/>
-                        : currentStep === CurrentStep.DOWNLOAD && pdfUrl ? <DownloadStep pdfUrl={pdfUrl}/>
-                            : <ErrorPopup/>
+                        : currentStep === CurrentStep.DOWNLOAD && pdfUrl ? <DownloadStep setCurrentStep={setCurrentStep} pdfUrl={pdfUrl}/>
+                            : <ErrorPopup setCurrentStep={setCurrentStep}/>
             }
         </div>
     </>
