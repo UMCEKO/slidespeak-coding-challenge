@@ -57,6 +57,6 @@ async def convert(request: Request,file: UploadFile = File(description="The Powe
     result = convert_pptx_to_pdf.delay(url)
 
     return ConvertResponse(
-        request_id=result.id,
+        job_id=result.id,
         message="Worked?"
     )
