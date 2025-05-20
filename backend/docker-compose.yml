@@ -1,5 +1,11 @@
 version: '3'
 
 services:
+  app:
+    build: .
+    depends_on:
+      - unoserver
+    ports:
+      - "3000:3000"
   unoserver:
     image: libreofficedocker/libreoffice-unoserver:3.19-9c28c22
