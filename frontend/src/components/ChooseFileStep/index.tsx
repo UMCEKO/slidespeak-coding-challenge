@@ -1,3 +1,5 @@
+"use client"
+
 import { FC, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import UploadIcon from '@/icons/UploadIcon';
@@ -18,7 +20,7 @@ export const ChooseFileStep: FC<ChooseFileStepProps> = () => {
       <div className="flex shrink-0 grow-0 flex-col items-center gap-2">
         <div className="mb-2 rounded-full bg-gray-100 p-2">
           <div className="grid place-items-center rounded-full bg-gray-200 p-2 [&>svg]:size-8">
-            <UploadIcon />
+            <UploadIcon/>
           </div>
         </div>
         <p className="text-sm leading-8 text-gray-600">
