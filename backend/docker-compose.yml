@@ -4,8 +4,28 @@ services:
   app:
     build: .
     depends_on:
+      - redis
       - unoserver
+      - celery
     ports:
       - "3000:3000"
+    environment:
+      - REDIS_URL=redis://redis
+    env_file: .env
+  celery:
+    build: .
+    depends_on:
+      - redis
+      - unoserver
+    environment:
+      - REDIS_URL=redis://redis
+    env_file: .env
+    command: "celery -A app.worker worker"
   unoserver:
     image: libreofficedocker/libreoffice-unoserver:3.19-9c28c22
+    ports:
+      - "2004:2004"
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"

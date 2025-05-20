@@ -21,8 +21,11 @@ class Settings(BaseSettings):
     S3_BUCKET_NAME: str = os.getenv("S3_BUCKET")
     S3_PRESIGNED_URL_EXPIRY: int = 3600
 
+    # Redis
+    REDIS_URL: str = os.getenv("REDIS_URL")
+
     # File storage settings
-    MAX_FILE_SIZE_MB: float = 50
+    MAX_FILE_SIZE_MB: int = 50
 
     # Other
     PORT: int = int(os.getenv("PORT", "3000"))
