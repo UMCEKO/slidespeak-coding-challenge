@@ -147,7 +147,7 @@ export const ConfirmationStep: FC<ConfirmationStepProps> = ({
       >
         <p className={'text-lg font-semibold text-gray-800'}>{file.name}</p>
         <p className={'text-sm text-gray-600'}>
-          {Math.floor((100 * file.size) / (1024 * 1024)) / 10} MB
+          {Math.floor((100 * file.size) / (1024 * 1024)) / 100} MB
         </p>
       </div>
       <CompressionSelector isLoading={uploading} />
