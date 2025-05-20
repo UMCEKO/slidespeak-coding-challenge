@@ -19,13 +19,15 @@ services:
       - unoserver
     environment:
       - REDIS_URL=redis://redis
+      - UNOSERVER_URL=http://unoserver:2004
     env_file: .env
     command: "celery -A app.worker worker"
   unoserver:
     image: libreofficedocker/libreoffice-unoserver:3.19-9c28c22
-    ports:
-      - "2004:2004"
+#   WARNING! Unsecure! Do not de-comment unless doing quick-local testing
+#    ports:
+#      - "2004:2004"
   redis:
     image: redis:alpine
-    ports:
-      - "6379:6379"
+#    ports:
+#      - "6379:6379"
