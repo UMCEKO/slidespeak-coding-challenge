@@ -7,10 +7,9 @@ from fastapi import APIRouter, File, UploadFile, HTTPException
 from starlette.requests import Request
 
 from app.core.config import settings
-from app.schemas.base_envelope import BaseEnvelope
 from app.schemas.convert import ConvertResponse
 from app.services.s3 import s3_client
-from app.tasks.convert import convert_pptx_to_pdf
+from app.tasks.convert import convert_task, convert_pptx_to_pdf
 
 router = APIRouter(prefix="/convert")
 
@@ -49,10 +48,13 @@ async def convert(request: Request,file: UploadFile = File(description="The Powe
     )
 
     # Get the signed url to pass it onto the task queue
-    url = s3_client.generate_presigned_url("get_object", Params={
-        "Bucket": settings.S3_BUCKET_NAME,
-        "Key": key,
-    })
+    url = s3_client.generate_presigned_url(
+        "get_object",
+        Params={
+            "Bucket": settings.S3_BUCKET_NAME,
+            "Key": key,
+        },
+        ExpiresIn=settings.S3_PRESIGNED_URL_EXPIRY)
 
     result = convert_pptx_to_pdf.delay(url)
 
