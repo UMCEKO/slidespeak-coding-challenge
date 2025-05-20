@@ -22,7 +22,7 @@ export const PowerPointToPdfConverter: FC<PowerPointToPdfConverterProps> = () =>
         <div className={"flex items-center justify-center w-screen h-screen"}>
             {
                 currentStep === CurrentStep.CHOOSE
-                    ? <ChooseFileStep setFile={setFile} setCurrentStep={setCurrentStep}/>
+                    ? <ChooseFileStep setCurrentStep={setCurrentStep} setFile={setFile}/>
                     : currentStep === CurrentStep.CONFIRMATION && file
                         ? <ConfirmationStep file={file} setCurrentStep={setCurrentStep} setPdfUrl={setPdfUrl}/>
                         : currentStep === CurrentStep.DOWNLOAD && pdfUrl ? <DownloadStep setCurrentStep={setCurrentStep} pdfUrl={pdfUrl}/>
