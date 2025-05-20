@@ -1,5 +1,6 @@
 import boto3
 import botocore.exceptions
+from botocore.config import Config
 # For type definitions
 from mypy_boto3_s3.client import S3Client
 from app.core.config import settings
@@ -12,7 +13,8 @@ s3_client: S3Client = boto3.client(
     endpoint_url=settings.S3_ENDPOINT,
     region_name=settings.S3_REGION,
     aws_access_key_id=settings.S3_ACCESS_KEY,
-    aws_secret_access_key=settings.S3_SECRET_KEY
+    aws_secret_access_key=settings.S3_SECRET_KEY,
+    config=Config(signature_version='s3v4')
 )
 
 def check_s3():
