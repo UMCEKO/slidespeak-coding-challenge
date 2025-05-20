@@ -1,9 +1,11 @@
+import axios from "axios";
 import {Dispatch, FC, SetStateAction, useState} from 'react';
 import {z} from "zod";
 
 import {CurrentStep, ErrorState} from "@/components/PowerPointToPdfConverter";
 import {Button} from "@/components/PowerPointToPdfConverter/Button";
 import {CompressionSelector} from "@/components/PowerPointToPdfConverter/ConfirmationStep/CompressionSelector";
+import env from "@/utils/env";
 
 type ConfirmationStepProps = {
   file: File,
@@ -13,7 +15,7 @@ type ConfirmationStepProps = {
 };
 
 
-const PollingResult = z.object({
+const PollingResultSchema = z.object({
   message: z.string(),
   success: z.boolean(),
   status: z.discriminatedUnion("status", [
@@ -38,19 +40,113 @@ const PollingResult = z.object({
   ])
 })
 
-const ConvertQueueResult = z.object({
+const ConvertQueueResultSchema = z.object({
   message: z.string(),
   success: z.boolean(),
-  request_id: z.string()
+  job_id: z.string()
 })
 
-export const ConfirmationStep: FC<ConfirmationStepProps> = ({file, setCurrentStep, setPdfUrl}) => {
+const sleep = (ms: number) => new Promise(resolve => setTimeout(()=>resolve(null), ms))
+
+export const ConfirmationStep: FC<ConfirmationStepProps> = ({file, setCurrentStep, setPdfUrl, setError}) => {
   const [uploading, setUploading] = useState(false)
 
   async function confirmClicked() {
-    setUploading(true)
+    setUploading(true);
+    let jobId: string;
 
-    setCurrentStep(CurrentStep.DOWNLOAD)
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response = await axios.post(
+        `${env.NEXT_PUBLIC_API_URL}/v1/convert`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          responseType: "json"
+        }
+      );
+
+      const parsedResult = ConvertQueueResultSchema.safeParse(response.data);
+      if (!parsedResult.success) {
+        setError(ErrorState.OTHER);
+        return;
+      }
+
+      jobId = parsedResult.data.job_id;
+    }
+    catch (e) {
+      console.error("File upload error:", e);
+      setError(ErrorState.QUEUE_ERROR);
+      setUploading(false); // Reset upload state
+      return;
+    }
+
+    // Create an AbortController for cleanup
+    const abortController = new AbortController();
+
+    try {
+      let retryCount = 0;
+      const maxRetries = 30; // 60 seconds at 2-second intervals
+
+      while (retryCount < maxRetries) {
+        try {
+          const response = await axios.get(
+            `${env.NEXT_PUBLIC_API_URL}/v1/status/${jobId}`,
+            {
+              responseType: "json",
+              signal: abortController.signal // For cancellation
+            }
+          );
+
+          const parsedResult = PollingResultSchema.safeParse(response.data);
+          if (!parsedResult.success) {
+            setError(ErrorState.OTHER)
+            return
+          }
+
+          const data = parsedResult.data;
+
+          if (data.status.status === "SUCCESS") {
+            setPdfUrl(data.status.result);
+            setCurrentStep(CurrentStep.DOWNLOAD);
+            return;
+          }
+
+          if (data.status.status === "FAILURE") {
+            setError(ErrorState.PROCESSING_ERROR);
+          }
+
+          // Wait before polling again
+          await sleep(2000);
+          retryCount++;
+        } catch (error) {
+          if (!(error instanceof Error)) return
+          if (error.name === 'AbortError') {
+            // Request was cancelled, just exit
+            return;
+          }
+          setError(
+            ErrorState.QUERY_ERROR
+          );
+          return
+        }
+      }
+
+      // If we get here, we've exceeded max retries
+      setError(ErrorState.TIMEOUT_ERROR);
+      return
+    }
+    catch (e) {
+      console.error("Polling error:", e);
+      setError(
+        ErrorState.QUERY_ERROR
+      );
+      setUploading(false); // Reset upload state
+    }
   }
 
   return (
