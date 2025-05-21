@@ -5,8 +5,6 @@ from requests import HTTPError
 
 from app.services.conversion import convert_powerpoint_to_pdf
 
-
-@pytest.mark.asyncio
 async def test_convert_powerpoint_to_pdf_success():
     dummy_pptx_bytes = b"pptx file content"
     dummy_pdf_bytes = b"%PDF-1.4\n..."
@@ -32,13 +30,11 @@ async def test_convert_powerpoint_to_pdf_success():
 
         assert result == "https://dummy-url/converted.pdf"
 
-@pytest.mark.asyncio
 async def test_convert_powerpoint_to_pdf_get_failure():
     with patch("app.services.conversion.httpx.get", side_effect=HTTPError), \
             pytest.raises(HTTPError):
         await convert_powerpoint_to_pdf("https://fake.url/file.pptx")
 
-@pytest.mark.asyncio
 async def test_convert_powerpoint_to_pdf_post_timeout():
     dummy_pptx_bytes = b"pptx file content"
 
@@ -55,8 +51,6 @@ async def test_convert_powerpoint_to_pdf_post_timeout():
             await convert_powerpoint_to_pdf("https://fake-url/pptx")
         assert "Timeout converting" in str(e.value)
 
-
-@pytest.mark.asyncio
 async def test_convert_powerpoint_to_pdf_get_timeout():
     with patch("app.services.conversion.httpx.get", side_effect=Exception("Timed out")):
         with pytest.raises(Exception) as e:
