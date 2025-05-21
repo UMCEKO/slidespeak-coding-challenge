@@ -1,6 +1,5 @@
 import { FC, ButtonHTMLAttributes } from 'react';
-
-import { SpinAnimation } from '@/components/PowerPointToPdfConverter/ConfirmationStep/SpinAnimation';
+import { LoadingIndicatorIcon } from '@/icons/LoadingIndicatorIcon';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   isLoading?: boolean;
@@ -19,7 +18,7 @@ export const Button: FC<ButtonProps> = ({ isLoading, variant, disabled, children
       }`}
       disabled={disabled}
     >
-      {isLoading ? <SpinAnimation /> : children}
+      {isLoading ? <LoadingIndicatorIcon /> : children}
     </button>
   );
 };

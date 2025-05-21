@@ -2,7 +2,7 @@ import { Dispatch, FC, SetStateAction } from 'react';
 
 import { CurrentStep, ErrorState } from '@/components/PowerPointToPdfConverter';
 import { Button } from '@/components/PowerPointToPdfConverter/Button';
-import { ErrorIcon } from '@/icons/Error';
+import { ErrorIcon } from '@/icons/ErrorIcon';
 
 type ErrorPopupProps = {
   setCurrentStep: Dispatch<SetStateAction<CurrentStep>>;
