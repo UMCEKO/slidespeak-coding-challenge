@@ -54,7 +54,7 @@ export const PowerPointToPdfConverter: FC<PowerPointToPdfConverterProps> = () =>
         );
       case CurrentStep.DOWNLOAD:
         return pdfUrl ? (
-          <DownloadStep setCurrentStep={setCurrentStep} pdfUrl={pdfUrl} />
+          <DownloadStep setCurrentStep={setCurrentStep} setError={setError} pdfUrl={pdfUrl} />
         ) : (
           <ErrorPopup setCurrentStep={setCurrentStep} errorState={ErrorState.OTHER} />
         );
