@@ -39,7 +39,7 @@ async def convert(file: UploadFile = File(description="The PowerPoint file to be
     # Upload the file
     s3_client.put_object(
         Body=file.file,
-        ContentType="application/vnd.openxmlformats-officedocument.presentationml.presentation",
+        ContentType=file.content_type,
         Bucket=settings.S3_BUCKET_NAME,
         Key=key
     )
@@ -56,7 +56,7 @@ async def convert(file: UploadFile = File(description="The PowerPoint file to be
     result = convert_pptx_to_pdf.delay(url)
 
     return ConvertResponse(
-        message="Worked?",
+        message="Successfully queued the conversion.",
         data=ConvertPayload(
             job_id=result.id
         ),
