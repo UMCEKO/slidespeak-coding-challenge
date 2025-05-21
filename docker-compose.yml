@@ -1,0 +1,4 @@
+version: '2.34'
+
+include:
+  - ./frontend/docker-compose.yml
