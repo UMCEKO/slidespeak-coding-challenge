@@ -4,7 +4,7 @@ type CompressionSelectorProps = {
   isLoading?: boolean;
 };
 
-export const CompressionSelector: FC<CompressionSelectorProps> = ({ isLoading }) => {
+export const ConversionSelector: FC<CompressionSelectorProps> = ({ isLoading }) => {
   return isLoading ? (
     <div className="flex w-full items-center gap-2 rounded-lg border border-gray-300 p-4">
       <div className="size-7 animate-spin-pretty rounded-full border-4 border-solid border-t-blue-500"></div>

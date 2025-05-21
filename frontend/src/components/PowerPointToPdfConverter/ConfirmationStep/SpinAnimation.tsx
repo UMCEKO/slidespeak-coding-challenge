@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-export const SpinAnimation: FC<{}> = () => {
+export const SpinAnimation: FC = () => {
   return (
     <div className="animate-spin">
       <svg

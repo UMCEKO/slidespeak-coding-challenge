@@ -9,7 +9,7 @@ from app.services.s3 import s3_client
 async def convert_powerpoint_to_pdf(powerpoint_url: str):
     try:
         pptx_response = httpx.get(powerpoint_url)
-    except httpx.TimeoutException as e:
+    except httpx.TimeoutException:
         raise Exception("Timed out while trying to get the PowerPoint.")
     pptx_response.raise_for_status()
 
@@ -21,7 +21,7 @@ async def convert_powerpoint_to_pdf(powerpoint_url: str):
             },
             data={"convert-to": "pdf"}
         )
-    except httpx.TimeoutException as e:
+    except httpx.TimeoutException:
         raise Exception("Timed out while trying to convert to pdf.")
     key = f"converted/{uuid.uuid4()}"
 

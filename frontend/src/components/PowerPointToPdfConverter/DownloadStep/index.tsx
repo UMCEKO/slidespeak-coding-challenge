@@ -1,20 +1,17 @@
-import axios from "axios";
-import {Dispatch, FC, SetStateAction, useState} from 'react';
+import { Dispatch, FC, SetStateAction } from 'react';
 
-import {CurrentStep, ErrorState} from '@/components/PowerPointToPdfConverter';
-import {Button} from '@/components/PowerPointToPdfConverter/Button';
-import {CheckIcon} from '@/icons/CheckIcon';
-import {PdfIcon} from '@/icons/PdfIcon';
+import { CurrentStep, ErrorState } from '@/components/PowerPointToPdfConverter';
+import { Button } from '@/components/PowerPointToPdfConverter/Button';
+import { CheckIcon } from '@/icons/CheckIcon';
+import { PdfIcon } from '@/icons/PdfIcon';
 
 type DownloadStepProps = {
   pdfUrl: string;
   setCurrentStep: Dispatch<SetStateAction<CurrentStep>>;
-  setError: Dispatch<SetStateAction<ErrorState>>
+  setError: Dispatch<SetStateAction<ErrorState>>;
 };
 
 export const DownloadStep: FC<DownloadStepProps> = ({ pdfUrl, setCurrentStep, setError }) => {
-
-
   function handleConvertAnother() {
     setCurrentStep(CurrentStep.CHOOSE);
   }
@@ -38,13 +35,10 @@ export const DownloadStep: FC<DownloadStepProps> = ({ pdfUrl, setCurrentStep, se
         </Button>
         {/* I could not find a way to make it download directly,
          it just kept opening it in the same tab without downloading the damn file,
-         so I made it open in a new tab instead. */ }
-        <a href={pdfUrl} target={"_blank"} className={"flex w-full"}>
-          <Button variant={'primary'} >
-            Download file
-          </Button>
+         so I made it open in a new tab instead. */}
+        <a href={pdfUrl} target={'_blank'} className={'flex w-full'}>
+          <Button variant={'primary'}>Download file</Button>
         </a>
-
       </div>
     </div>
   );

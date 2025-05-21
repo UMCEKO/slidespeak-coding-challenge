@@ -1,8 +1,7 @@
 import celery.result
 from fastapi import APIRouter
 
-from app.schemas.status import StatusResponse
-from app.schemas.tasks import TaskResult, TaskStatusEnum
+from app.schemas.status import StatusResponse, TaskResult, TaskStatusEnum
 from app.tasks import convert_pptx_to_pdf
 
 router = APIRouter(prefix="/status")
@@ -25,7 +24,7 @@ async def status(job_id: str):
     return StatusResponse(
         message=get_message(task_result.status),
         success=True,
-        status= task_result
+        data=task_result
     )
 
 

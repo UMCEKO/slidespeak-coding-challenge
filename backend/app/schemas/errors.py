@@ -1,10 +1,9 @@
 from pydantic_core import ErrorDetails
 
 from app.schemas.base_envelope import BaseEnvelope
+from app.schemas.base_error import BaseError
 
 
-class ValidationErrorResponse(BaseEnvelope):
-    detail: list[ErrorDetails]
+ValidationErrorResponse = BaseError[ErrorDetails]
 
-class HTTPErrorResponse(BaseEnvelope):
-    detail: str
+HTTPErrorResponse = BaseError[str]

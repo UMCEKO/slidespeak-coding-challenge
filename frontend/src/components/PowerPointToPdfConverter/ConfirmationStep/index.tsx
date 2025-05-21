@@ -4,7 +4,7 @@ import { z } from 'zod';
 
 import { CurrentStep, ErrorState } from '@/components/PowerPointToPdfConverter';
 import { Button } from '@/components/PowerPointToPdfConverter/Button';
-import { CompressionSelector } from '@/components/PowerPointToPdfConverter/ConfirmationStep/CompressionSelector';
+import { ConversionSelector } from '@/components/PowerPointToPdfConverter/ConfirmationStep/ConversionSelector';
 import env from '@/utils/env';
 
 type ConfirmationStepProps = {
@@ -17,7 +17,7 @@ type ConfirmationStepProps = {
 const PollingResultSchema = z.object({
   message: z.string(),
   success: z.boolean(),
-  status: z.discriminatedUnion('status', [
+  data: z.discriminatedUnion('status', [
     z.object({
       status: z.literal('PENDING'),
       ready: z.literal(false),
@@ -42,7 +42,9 @@ const PollingResultSchema = z.object({
 const ConvertQueueResultSchema = z.object({
   message: z.string(),
   success: z.boolean(),
-  job_id: z.string(),
+  data: z.object({
+    job_id: z.string(),
+  }),
 });
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(() => resolve(null), ms));
@@ -76,7 +78,7 @@ export const ConfirmationStep: FC<ConfirmationStepProps> = ({
         return;
       }
 
-      jobId = parsedResult.data.job_id;
+      jobId = parsedResult.data.data.job_id;
     } catch (e) {
       console.error('File upload error:', e);
       setError(ErrorState.QUEUE_ERROR);
@@ -106,13 +108,13 @@ export const ConfirmationStep: FC<ConfirmationStepProps> = ({
 
           const data = parsedResult.data;
 
-          if (data.status.status === 'SUCCESS') {
-            setPdfUrl(data.status.result);
+          if (data.data.status === 'SUCCESS') {
+            setPdfUrl(data.data.result);
             setCurrentStep(CurrentStep.DOWNLOAD);
             return;
           }
 
-          if (data.status.status === 'FAILURE') {
+          if (data.data.status === 'FAILURE') {
             setError(ErrorState.PROCESSING_ERROR);
           }
 
@@ -150,7 +152,7 @@ export const ConfirmationStep: FC<ConfirmationStepProps> = ({
           {Math.floor((100 * file.size) / (1024 * 1024)) / 100} MB
         </p>
       </div>
-      <CompressionSelector isLoading={uploading} />
+      <ConversionSelector isLoading={uploading} />
       <div className={'flex flex-row gap-3 w-full'}>
         <Button variant={'secondary'} disabled={uploading}>
           Cancel
