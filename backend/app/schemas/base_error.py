@@ -4,7 +4,7 @@ from pydantic import BaseModel
 
 from app.schemas.base_response import BaseResponse
 
-T = TypeVar("T", bound=BaseModel)
+T = TypeVar("T")
 
 class BaseError(BaseResponse, Generic[T]):
     detail: T

@@ -5,6 +5,8 @@ from pydantic import AnyHttpUrl
 from pydantic_settings import BaseSettings
 
 
+dotenv.load_dotenv()
+
 class Settings(BaseSettings):
     dotenv.load_dotenv()
 
