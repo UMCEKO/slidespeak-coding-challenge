@@ -34,7 +34,7 @@ export const PowerPointToPdfConverter: FC<PowerPointToPdfConverterProps> = () =>
 
   const renderCurrentStep = () => {
     if (error !== ErrorState.NONE) {
-      return <ErrorPopup setCurrentStep={setCurrentStep} errorState={error} />;
+      return <ErrorPopup setCurrentStep={setCurrentStep} errorState={error} setError={setError} />;
     }
     switch (currentStep) {
       case CurrentStep.CHOOSE:
@@ -50,13 +50,21 @@ export const PowerPointToPdfConverter: FC<PowerPointToPdfConverterProps> = () =>
             setPdfUrl={setPdfUrl}
           />
         ) : (
-          <ErrorPopup setCurrentStep={setCurrentStep} errorState={ErrorState.OTHER} />
+          <ErrorPopup
+            setCurrentStep={setCurrentStep}
+            errorState={ErrorState.OTHER}
+            setError={setError}
+          />
         );
       case CurrentStep.DOWNLOAD:
         return pdfUrl ? (
           <DownloadStep setCurrentStep={setCurrentStep} setError={setError} pdfUrl={pdfUrl} />
         ) : (
-          <ErrorPopup setCurrentStep={setCurrentStep} errorState={ErrorState.OTHER} />
+          <ErrorPopup
+            setCurrentStep={setCurrentStep}
+            errorState={ErrorState.OTHER}
+            setError={setError}
+          />
         );
     }
   };
