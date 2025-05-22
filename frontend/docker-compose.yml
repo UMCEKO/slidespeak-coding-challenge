@@ -12,8 +12,7 @@ services:
       backend:
         condition: service_healthy
         required: true
-    environment:
-      NEXT_PUBLIC_API_URL: "http://backend"
+    env_file: .env
     healthcheck:
       test: ["CMD-SHELL", "wget -q --tries=1 --spider http://localhost:3000/api/health"]
       start_period: 10s
