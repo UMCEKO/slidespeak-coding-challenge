@@ -15,7 +15,7 @@ const figtree = Figtree({
 });
 
 const RootLayout = async ({ children }: { children: React.ReactNode }) => (
-  <html lang="en" className={figtree.className + ' bg-[#F5F5F5]'}>
+  <html lang="en" className={figtree.className}>
     <body>{children}</body>
   </html>
 );

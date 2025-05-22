@@ -6,8 +6,6 @@ import { ConfirmationStep } from '@/components/PowerPointToPdfConverter/Confirma
 import { DownloadStep } from '@/components/PowerPointToPdfConverter/DownloadStep';
 import { ErrorPopup } from '@/components/PowerPointToPdfConverter/ErrorPopup';
 
-type PowerPointToPdfConverterProps = {};
-
 export enum CurrentStep {
   CHOOSE,
   CONFIRMATION,
@@ -26,7 +24,7 @@ export enum ErrorState {
   OTHER,
 }
 
-export const PowerPointToPdfConverter: FC<PowerPointToPdfConverterProps> = () => {
+export const PowerPointToPdfConverter: FC = () => {
   const [currentStep, setCurrentStep] = useState<CurrentStep>(CurrentStep.CHOOSE);
   const [file, setFile] = useState<null | File>(null);
   const [pdfUrl, setPdfUrl] = useState<null | string>(null);
@@ -69,11 +67,5 @@ export const PowerPointToPdfConverter: FC<PowerPointToPdfConverterProps> = () =>
     }
   };
 
-  return (
-    <>
-      <div className={'flex items-center justify-center w-screen h-screen'}>
-        {renderCurrentStep()}
-      </div>
-    </>
-  );
+  return <>{renderCurrentStep()}</>;
 };
