@@ -1,3 +1,4 @@
+import asyncio
 import uuid
 
 import magic
@@ -11,7 +12,13 @@ from app.tasks.convert import convert_pptx_to_pdf
 router = APIRouter(prefix="/convert")
 
 MAX_FILE_SIZE_BYTES = 1024 * 1024 * settings.MAX_FILE_SIZE_MB
-
+"""
+Note: After researching it a bit more,
+I've read that it only creates a new thread when the function is synchronous,
+so in order to prevent this endpoint from blocking threads,
+we wrap it in asyncio.to_thread,
+or alternatively we could put it in a celery task.
+"""
 @router.post(
     "",
     summary="Allows you to convert a PowerPoint file to a PDF file",
@@ -37,7 +44,7 @@ async def convert(file: UploadFile = File(description="The PowerPoint file to be
     key = f"uploads/{uuid.uuid4()}"
 
     # Upload the file
-    s3_client.put_object(
+    await asyncio.to_thread(s3_client.put_object,
         Body=file.file,
         ContentType=file.content_type,
         Bucket=settings.S3_BUCKET_NAME,
@@ -45,15 +52,17 @@ async def convert(file: UploadFile = File(description="The PowerPoint file to be
     )
 
     # Get the signed url to pass it onto the task queue
-    url = s3_client.generate_presigned_url(
+    url = await asyncio.to_thread(
+        s3_client.generate_presigned_url,
         "get_object",
         Params={
             "Bucket": settings.S3_BUCKET_NAME,
             "Key": key,
         },
-        ExpiresIn=settings.S3_PRESIGNED_URL_EXPIRY)
+        ExpiresIn=settings.S3_PRESIGNED_URL_EXPIRY
+    )
 
-    result = convert_pptx_to_pdf.delay(url)
+    result = await asyncio.to_thread(convert_pptx_to_pdf.delay, url)
 
     return ConvertResponse(
         message="Successfully queued the conversion.",

@@ -13,7 +13,7 @@ router = APIRouter(prefix="/status")
     response_description="The current status of the conversion, with data if available.",
     summary="Check the status of the cocversion process"
 )
-async def status(job_id: str):
+def status(job_id: str):
     result: celery.result.AsyncResult = convert_pptx_to_pdf.AsyncResult(job_id)
     task_result = TaskResult(
             status=result.status,

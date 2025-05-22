@@ -26,7 +26,7 @@ async def test_convert_powerpoint_to_pdf_success():
 
         presign_mock.return_value = "https://dummy-url/converted.pdf"
 
-        result = await convert_powerpoint_to_pdf("https://fake.url/file.pptx")
+        result = convert_powerpoint_to_pdf("https://fake.url/file.pptx")
 
         assert result == "https://dummy-url/converted.pdf"
 

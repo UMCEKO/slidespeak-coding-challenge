@@ -6,7 +6,7 @@ from app.core.config import settings
 from app.services.s3 import s3_client
 
 
-async def convert_powerpoint_to_pdf(powerpoint_url: str):
+def convert_powerpoint_to_pdf(powerpoint_url: str):
     try:
         pptx_response = httpx.get(powerpoint_url)
     except httpx.TimeoutException:
