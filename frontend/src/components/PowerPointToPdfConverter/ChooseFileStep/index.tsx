@@ -45,7 +45,7 @@ export const ChooseFileStep: FC<ChooseFileStepProps> = ({ setCurrentStep, setFil
       className="group cursor-pointer rounded-xl border border-dashed border-gray-400 bg-white px-6 py-16 w-[416px] min-w-[365px]"
       {...getRootProps()}
     >
-      <input data-testid="file-input" {...getInputProps()} />
+      <input {...getInputProps()} />
       <div className="flex shrink-0 grow-0 flex-col items-center gap-2">
         <div className="mb-2 rounded-full bg-gray-100 p-2">
           <div className="grid place-items-center rounded-full bg-gray-200 p-2 [&>svg]:size-8">
